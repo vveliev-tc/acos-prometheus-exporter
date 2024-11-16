@@ -2,3 +2,6 @@
 /system/control-cpu/stats
 /system/data-cpu/stats
 /system/memory/stats
+/slb/dns
+/slb/virtual-server
+/slb/service-group/{name}/stats
