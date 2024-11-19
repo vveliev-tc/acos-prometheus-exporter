@@ -1,9 +1,9 @@
 ---
 
 services:
-  prometheus-exporter-acos:
-    image: "ghcr.io/vveliev-tc/prometheus-exporter-acos:local"
-    container_name: prometheus-exporter-acos
+  acos-prometheus-exporter:
+    image: "ghcr.io/vveliev-tc/acos-prometheus-exporter:local"
+    container_name: acos-prometheus-exporter
     build:
       context: .
       dockerfile: Dockerfile
