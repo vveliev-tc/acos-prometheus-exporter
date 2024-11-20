@@ -7,7 +7,8 @@ RUN pip install --upgrade pip
 
 WORKDIR /app
 
-COPY src/ /app
+COPY src/acos_exporter.py /app/acos_exporter.py
+COPY src/requirements.txt /app/requirements.txt
 COPY build/entrypoint.sh /entrypoint.sh
 
 RUN chmod +x /entrypoint.sh

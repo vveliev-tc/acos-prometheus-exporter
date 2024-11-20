@@ -7,3 +7,5 @@ set -e
 set -x
 
 exec python /app/acos_exporter.py
+
+exec "$@"
