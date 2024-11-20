@@ -44,6 +44,6 @@ jobs:
       docker-registry: "ghcr.io"
       version: ${{ needs.ci-init.outputs.version }}
       # tags: "latest, ${{ github.sha }}"
+      docker-registry-username: ${{ github.actor }}
     secrets:
-      DOCKER_REGISTRY_USERNAME: ${{ github.actor }}
-      DOCKER_REGISTRY_PASSWORD: ${{ github.token }}
+      docker-registry-password : ${{ github.token }}
