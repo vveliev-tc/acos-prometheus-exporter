@@ -41,9 +41,9 @@ jobs:
       context: "."
       dockerfile: "./build/Dockerfile"
       repository: "vveliev/acos-prometheus-exporter"
-      docker-registry: "ghcr.io"
       version: ${{ needs.ci-init.outputs.version }}
       # tags: "latest, ${{ github.sha }}"
+      docker-registry: "ghcr.io"
       docker-registry-username: ${{ github.actor }}
     secrets:
-      docker-registry-password : ${{ secrets.GITHUB_TOKEN }}
+      docker-registry-password: ${{ secrets.GITHUB_TOKEN }}
