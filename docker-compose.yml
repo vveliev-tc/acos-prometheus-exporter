@@ -6,14 +6,14 @@ services:
     container_name: acos-prometheus-exporter
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: ./build/Dockerfile
     ports:
       - "9734:9734"
-    command: ["acos_exporter.py", "--config", "/local/config.yml"]
+    command: ["--config", "/local/config.yml"]
     volumes:
       # - ./examples/:/local/
       - ./.ci/:/local/
-      - ./src/:/app/
+      # - ./src/:/app/
 
   prometheus:
     image: prom/prometheus
