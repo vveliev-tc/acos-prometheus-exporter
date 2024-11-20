@@ -46,4 +46,4 @@ jobs:
       # tags: "latest, ${{ github.sha }}"
       docker-registry-username: ${{ github.actor }}
     secrets:
-      docker-registry-password : ${{ github.token }}
+      docker-registry-password : ${{ secrets.GITHUB_TOKEN }}
