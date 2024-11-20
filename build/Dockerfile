@@ -18,7 +18,7 @@ RUN pip3 install -r requirements.txt
 EXPOSE 9734
 
 LABEL service="a10-exporter"
-LABEL org.opencontainers.image.source=https://github.com/vveliev/acos-prometheus-exporter
+LABEL org.opencontainers.image.source=https://github.com/vveliev-tc/acos-prometheus-exporter
 LABEL org.opencontainers.image.description="A10 Networks Prometheus Exporter"
 
 ENTRYPOINT ["/entrypoint.sh"]
