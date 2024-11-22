@@ -40,7 +40,7 @@ jobs:
     with:
       context: "."
       dockerfile: "./build/Dockerfile"
-      repository: "vveliev-tc/acos-prometheus-exporter"
+      repository: "vveliev-tc/acos-prometheus-exporter/acos-prometheus-exporter"
       version: ${{ needs.ci-init.outputs.version }}
       # tags: "latest, ${{ github.sha }}"
     secrets:
