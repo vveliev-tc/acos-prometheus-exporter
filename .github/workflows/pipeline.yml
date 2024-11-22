@@ -33,6 +33,8 @@ jobs:
 
   cd-package:
     needs: [ci-init]
+    # only build on main branch
+    if: github.ref == 'refs/heads/main'
     uses: vveliev/ci/.github/workflows/build-docker.yml@main
     permissions:
       contents: read
