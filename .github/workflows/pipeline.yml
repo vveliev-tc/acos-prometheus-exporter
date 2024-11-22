@@ -1,0 +1,49 @@
+# yamllint disable rule:line-length
+---
+name: pipeline
+
+"on":
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "Action"
+        default: "release"
+
+permissions:
+  contents: read
+
+jobs:
+  # Initialize required resources
+  # - Checkout project and upload it as artifact named ``repo``
+  # - set output variables for version base on the git tag
+  ci-init:
+    uses: vveliev/ci/.github/workflows/ci-init.yml@main
+    # with:
+    #   upload-source-code: false
+
+  # ci-pre-commit:
+  #   needs: [ci-init]
+  #   uses: tucowsinc/vveliev/.github/workflows/ci-precommit.yaml@main
+  #   with:
+  #     ruby-version: 2.7.8
+
+  cd-package:
+    needs: [ci-init]
+    # only build on main branch
+    if: github.ref == 'refs/heads/main'
+    uses: vveliev/ci/.github/workflows/build-docker.yml@main
+    permissions:
+      contents: read
+      packages: write
+    with:
+      context: "."
+      dockerfile: "./build/Dockerfile"
+      repository: "vveliev-tc/acos-prometheus-exporter/acos-prometheus-exporter"
+      version: ${{ needs.ci-init.outputs.version }}
+      # tags: "latest, ${{ github.sha }}"
+    secrets:
+      docker-registry-password: ${{ secrets.GITHUB_TOKEN }}

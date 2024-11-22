@@ -1,5 +1,9 @@
 APPLICATION_NAME := acos-prometheus-exporter
-DOCKER_PROXY := ghcr.io/$(GITHUB_USERNAME)
+GITHUB_USERNAME := ${GITHUB_USERNAME}
+VERSION ?= $(shell git describe --tags)
+
+DOCKER_FILE := "./build/Dockerfile"
+DOCKER_PROXY := "ghcr.io/$(GITHUB_USERNAME)"
 
 sandbox:
 	docker compose -f docker-compose.yml up -d
@@ -15,10 +19,9 @@ init:
 login: check-github-username
 	docker login ghcr.io -u ${GITHUB_USERNAME}
 
-
 d-build: check-version
 	docker build  \
-	-f ./Dockerfile \
+	-f ${DOCKER_FILE} \
 	--platform=linux/amd64 \
 	--tag ${DOCKER_PROXY}/${APPLICATION_NAME}:$(VERSION)  \
 	.
@@ -29,4 +32,9 @@ d-push: check-version
 check-github-username:
 ifndef GITHUB_USERNAME
 	$(error GITHUB_USERNAME is undefined)
+endif
+
+check-version:
+ifndef VERSION
+	$(error VERSION is undefined)
 endif
