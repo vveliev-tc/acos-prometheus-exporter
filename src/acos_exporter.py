@@ -9,17 +9,15 @@ import requests
 import urllib3
 from flask import Response, Flask, request
 from prometheus_client import Gauge
-import logging
-from logging.handlers import RotatingFileHandler
-from logging import StreamHandler
-from flask.logging import default_handler
+
+from config_loader import load_configuration
+
 
 UNDERSCORE = "_"
 SLASH = "/"
 HYPHEN = "-"
 PLUS = "+"
 
-LOG_FILE_SIZE = 5*1024*1024
 API_TIMEOUT = 5
 
 global_api_collection = dict()
@@ -32,6 +30,11 @@ _INF = float("inf")
 lock1 = Lock()
 tokens = dict()
 
+def parse_arguments():
+    parser = argparse.ArgumentParser(description='ACOS Prometheus Exporter')
+    parser.add_argument('-c', '--config', type=str, default='config.yml', help='Path to the configuration file')
+    parser.add_argument('-l', '--log', type=str, default='INFO', help='Log level, this will override the log level in the config file')
+    return parser.parse_args()
 
 def get_valid_token(host_ip, to_call=False):
     global tokens
@@ -52,39 +55,6 @@ def get_valid_token(host_ip, to_call=False):
         lock1.release()
 
 
-def set_logger(log_file=None, log_level="INFO"):
-    log_levels = {
-        'DEBUG': logging.DEBUG,
-        'INFO': logging.INFO,
-        'WARN': logging.WARN,
-        'ERROR': logging.ERROR,
-        'CRITICAL': logging.CRITICAL,
-    }
-    if log_level.upper() not in log_levels:
-        print(log_level.upper() + " is an invalid log level, setting 'INFO' as default.")
-        log_level = "INFO"
-
-    log_formatter = logging.Formatter('%(asctime)s %(levelname)s %(funcName)s(%(lineno)d) %(message)s')
-
-    if log_file:
-        log_handler = RotatingFileHandler(log_file, maxBytes=LOG_FILE_SIZE, backupCount=2, encoding=None, delay=True)
-    else:
-        log_handler = StreamHandler(sys.stdout)
-
-    log_handler.setFormatter(log_formatter)
-    log_handler.setLevel(log_levels[log_level.upper()])
-
-    logging.getLogger("requests").setLevel(logging.WARNING)
-    logging.getLogger("urllib3").setLevel(logging.WARNING)
-
-    logger = logging.getLogger('a10_prometheus_exporter_logger')
-    logger.setLevel(log_levels[log_level.upper()])
-
-    if not logger.handlers:
-        print("Adding logger handler")
-        logger.addHandler(log_handler)
-
-    return logger
 
 
 def getLabelNameFromA10URL(api_list):
@@ -315,17 +285,17 @@ def main():
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='ACOS Prometheus Exporter')
     parser.add_argument('-c', '--config', type=str, default='config.yml', help='Path to the configuration file')
+    parser.add_argument('-l', '--log', type=str, default='INFO', help='Log level, this will override the log level in the config file')
     args = parser.parse_args()
     config_file = args.config
 
     try:
-        with open(config_file) as f:
-            log_data = yaml.safe_load(f).get("log", {})
-            logger = set_logger(log_data.get("log_file", None), log_data.get("log_level", "INFO"))
-            app.logger.removeHandler(default_handler)
-            app.logger.addHandler(logger.handlers[0])
-            logger.info("Starting exporter")
-            main()
+        args = parse_arguments()
+        config_file = args.config
+        log_level_override = args.log
+
+        logger = load_configuration(app, config_file, log_level_override)
+        main()
     except Exception as e:
         print(e)
         sys.exit()

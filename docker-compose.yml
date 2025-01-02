@@ -13,7 +13,7 @@ services:
     volumes:
       # - ./examples/:/local/
       - ./.ci/:/local/
-      # - ./src/:/app/
+      - ./src/:/app/
 
   prometheus:
     image: prom/prometheus

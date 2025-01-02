@@ -23,4 +23,3 @@ LABEL org.opencontainers.image.source=https://github.com/vveliev-tc/acos-prometh
 LABEL org.opencontainers.image.description="A10 Networks Prometheus Exporter"
 
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["python", "acos_exporter.py"]
