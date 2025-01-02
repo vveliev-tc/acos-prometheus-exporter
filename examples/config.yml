@@ -5,5 +5,6 @@ hosts:
     username: <uname goes here>
     password: <pwd goes here>
 log:
-  log_level: DEBUG
-  # log_file: /app/log/acos_exporter.log
+  log_output: "file" # Options: "STDOUT", "journald", "file"
+  log_level: "DEBUG"
+  log_filename: "/var/log/acos_exporter.log" # Only used if log_output is "FILE"

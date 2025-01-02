@@ -14,7 +14,7 @@ COPY build/entrypoint.sh /entrypoint.sh
 
 RUN chmod +x /entrypoint.sh
 
-RUN pip3 install -r requirements.txt
+RUN pipenv install --deploy --system
 
 EXPOSE 9734
 
@@ -23,4 +23,3 @@ LABEL org.opencontainers.image.source=https://github.com/vveliev-tc/acos-prometh
 LABEL org.opencontainers.image.description="A10 Networks Prometheus Exporter"
 
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["python", "acos_exporter.py"]
