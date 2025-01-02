@@ -77,3 +77,7 @@ def set_logger(log_output="STDOUT", log_level="INFO", log_filename=None):
         print("Logger handler already exists")
 
     return logger
+
+def load_auth_config(config_file):
+    with open(config_file) as f:
+        return yaml.safe_load(f)["hosts"]
