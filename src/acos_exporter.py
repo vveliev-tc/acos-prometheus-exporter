@@ -4,7 +4,7 @@ from threading import Lock
 import prometheus_client
 from prometheus_client import Gauge
 
-from acos_client.client import ACOSClient
+from src.acos_client.client import ACOSClient
 
 UNDERSCORE = "_"
 SLASH = "/"

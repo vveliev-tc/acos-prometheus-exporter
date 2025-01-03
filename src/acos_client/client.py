@@ -1,7 +1,7 @@
 import json
 import requests
 from threading import Lock
-from config import load_auth_config
+from src.config import load_auth_config
 
 API_TIMEOUT = 5
 
