@@ -1,4 +1,4 @@
-# src/config_loader.py
+import os
 import yaml
 import logging
 from logging.handlers import RotatingFileHandler
@@ -7,6 +7,19 @@ from flask.logging import default_handler
 
 LOG_FILE_SIZE = 10 * 1024 * 1024  # 10 MB
 
+class Config:
+    DEBUG = False
+    TESTING = False
+    API_TIMEOUT = 5
+    LOG_FILE_SIZE = 10 * 1024 * 1024  # 10 MB
+    CONFIG_FILE = os.getenv('CONFIG_FILE', 'config.yml')
+
+class DevelopmentConfig(Config):
+    DEBUG = True
+    LOG_LEVEL = 'DEBUG'
+
+class ProductionConfig(Config):
+    LOG_LEVEL = 'INFO'
 
 def load_configuration(app, config_file, log_level_override=None):
     try:

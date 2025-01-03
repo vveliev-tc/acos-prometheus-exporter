@@ -8,9 +8,10 @@ RUN pip install pipenv
 
 WORKDIR /app
 
-COPY src/acos_exporter.py /app/acos_exporter.py
-COPY src/Pipfile /app/Pipfile
-COPY src/Pipfile.lock /app/Pipfile.lock
+COPY src/ /app/src
+COPY tests/ /app/tests
+COPY Pipfile /app/Pipfile
+COPY Pipfile.lock /app/Pipfile.lock
 COPY build/entrypoint.sh /entrypoint.sh
 
 RUN chmod +x /entrypoint.sh
@@ -29,7 +30,7 @@ FROM python:${PYTHON_VERSION}-${BASE_IMAGE} AS production
 
 WORKDIR /app
 
-COPY src/acos_exporter.py /app/acos_exporter.py
+COPY src/ /app/src
 COPY build/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
