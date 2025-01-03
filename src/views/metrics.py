@@ -1,6 +1,4 @@
-from flask import Flask, current_app, Blueprint, request, Response, jsonify
-import logging
-import os
+from flask import current_app, Blueprint, request, Response, jsonify
 import urllib3
 from acos_client.client import ACOSClient
 from acos_exporter import getLabelNameFromA10URL, parse_recursion  # Import the functions
@@ -98,9 +96,3 @@ def generic_exporter():
 
     logger.debug("Final Response - " + str(res))
     return Response(res, mimetype="text/plain")
-
-app = Flask(__name__)
-app.register_blueprint(metrics_bp)
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)

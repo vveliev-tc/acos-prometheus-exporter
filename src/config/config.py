@@ -1,9 +1,10 @@
 import os
 import yaml
-import logging
 from logging.handlers import RotatingFileHandler
 from logging import StreamHandler
 from flask.logging import default_handler
+import logging
+import sys
 
 LOG_FILE_SIZE = 10 * 1024 * 1024  # 10 MB
 
@@ -38,10 +39,6 @@ def load_configuration(app, config_file, log_level_override=None):
         raise
 
 def set_logger(log_output="STDOUT", log_level="INFO", log_filename=None):
-    import logging
-    from logging.handlers import RotatingFileHandler
-    from logging import StreamHandler
-    import sys
 
     log_levels = {
         'DEBUG': logging.DEBUG,
