@@ -1,5 +1,4 @@
 ---
-
 services:
   acos-prometheus-exporter:
     image: "ghcr.io/vveliev-tc/acos-prometheus-exporter:local"
@@ -14,7 +13,7 @@ services:
     volumes:
       # - ./examples/:/local/
       - ./.ci/:/local/
-      - ./src/:/app/
+      - ./:/app/
 
   prometheus:
     image: prom/prometheus
