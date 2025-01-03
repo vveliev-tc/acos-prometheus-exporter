@@ -1,6 +1,7 @@
 {
     "cSpell.words": [
-        "pyyaml",
-        "Pipfile"
+        "pipenv",
+        "Pipfile",
+        "pyyaml"
     ]
 }
