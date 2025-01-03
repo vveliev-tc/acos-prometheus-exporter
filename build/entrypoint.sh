@@ -8,4 +8,11 @@ set -x
 
 source /root/.local/share/virtualenvs/*/bin/activate
 
-exec python /app/acos_exporter.py "$@"
+# Set PYTHONPATH to include the parent directory of src
+export PYTHONPATH=/app
+
+# Print PYTHONPATH for verification
+echo "PYTHONPATH is set to: $PYTHONPATH"
+
+# Pass the correct path to the configuration file
+exec python /app/src/app.py "$@"

@@ -1,8 +1,7 @@
 import json
 import requests
-import urllib3
 from threading import Lock
-from config_loader import load_auth_config
+from config import load_auth_config
 
 API_TIMEOUT = 5
 
@@ -16,6 +15,10 @@ class ACOSClient:
     def get_valid_token(self, host_ip, to_call=False):
         self.lock.acquire()
         try:
+            if host_ip not in self.hosts_data:
+                self.logger.error("Host authentication configuration missing for host: {}".format(host_ip))
+                raise ValueError("Host authentication configuration missing for host: {}".format(host_ip))
+            
             if host_ip in self.tokens and not to_call:
                 return self.tokens[host_ip]
             else:
@@ -44,15 +47,21 @@ class ACOSClient:
 
             payload = {'Credentials': {'username': uname, 'password': pwd}}
             try:
-                auth = json.loads(requests.post("https://{host}/axapi/v3/auth".format(host=host), json=payload,
-                                                verify=False, timeout=API_TIMEOUT).content.decode('UTF-8'))
+                self.logger.debug("Sending authentication request to host: {}".format(host))
+                auth_response = requests.post("https://{host}/axapi/v3/auth".format(host=host), json=payload,
+                                              verify=False, timeout=API_TIMEOUT)
+                self.logger.debug("Authentication response: {}".format(auth_response.content.decode('UTF-8')))
+                auth = json.loads(auth_response.content.decode('UTF-8'))
             except requests.exceptions.Timeout:
                 self.logger.error("Connection to {host} timed out. (connect timeout={timeout} secs)".format(host=host,
                                                                                                        timeout=API_TIMEOUT))
                 return ''
+            except requests.exceptions.RequestException as e:
+                self.logger.error("Request exception: {}".format(str(e)))
+                return ''
 
             if 'authresponse' not in auth:
-                self.logger.error("Host credentials are not correct")
+                self.logger.error("Host credentials are not correct or authentication failed")
                 return ''
             return 'A10 ' + auth['authresponse']['signature']
 
