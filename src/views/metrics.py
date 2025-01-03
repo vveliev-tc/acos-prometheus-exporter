@@ -1,7 +1,7 @@
 from flask import current_app, Blueprint, request, Response, jsonify
 import urllib3
-from acos_client.client import ACOSClient
-from acos_exporter import getLabelNameFromA10URL, parse_recursion  # Import the functions
+from src.acos_client.client import ACOSClient
+from src.acos_exporter import getLabelNameFromA10URL, parse_recursion  # Import the functions
 
 metrics_bp = Blueprint('metrics', __name__)
 
@@ -36,8 +36,8 @@ def generic_exporter():
     res = []
     
     if not host_ip:
-        logger.error("host_ip is required. Exiting API endpoints - {}".format(api_endpoints))
-        return jsonify(error="host_ip is required. Exiting API endpoints - {}".format(api_endpoints)), 400
+        logger.error("host_ip is required. Default API endpoints - {}".format(api_endpoints))
+        return jsonify(error="host_ip is required. Default API endpoints - {}".format(api_endpoints)), 400
 
     logger.info("Host = " + host_ip + "\t" + "API = " + str(api_names))
     logger.info("Endpoint = " + str(api_endpoints))
