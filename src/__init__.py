@@ -9,7 +9,8 @@ def create_app(config_name):
     # Override configuration with environment variables if set
     app.config['LOG_LEVEL'] = os.getenv('LOG_LEVEL', app.config['LOG_LEVEL'])
     app.config['CONFIG_FILE'] = os.getenv('CONFIG_FILE', app.config['CONFIG_FILE'])
-    app.config['METRIC_PREFIX'] = os.getenv('METRIC_PREFIX', "")
+    app.config['METRIC_PREFIX'] = os.getenv('METRIC_PREFIX', app.config['METRIC_PREFIX'])
+    app.config['APIS_FILE'] = os.getenv('APIS_FILE', app.config['APIS_FILE'])
 
     with app.app_context():
         from .views.metrics import metrics_bp

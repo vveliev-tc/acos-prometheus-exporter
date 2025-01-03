@@ -14,6 +14,9 @@ class Config:
     API_TIMEOUT = 5
     LOG_FILE_SIZE = 10 * 1024 * 1024  # 10 MB
     CONFIG_FILE = os.getenv('CONFIG_FILE', 'config.yml')
+    APIS_FILE = os.getenv('APIS_FILE', 'default_api_endpoints.txt')
+    LOG_LEVEL = os.getenv('LOG_LEVEL', 'INFO')
+    METRIC_PREFIX = os.getenv('METRIC_PREFIX', 'acos')
 
 class DevelopmentConfig(Config):
     DEBUG = True

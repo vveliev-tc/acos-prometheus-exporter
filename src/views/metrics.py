@@ -13,6 +13,7 @@ def default():
 def generic_exporter():
     logger = current_app.logger
     config_file = current_app.config['CONFIG_FILE']
+    apis_file = current_app.config['APIS_FILE']
     logger.debug("---------------------------------------------------------------------------------------------------")
     urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
     
@@ -22,13 +23,13 @@ def generic_exporter():
     
     if not api_endpoints:
         try:
-            with open("apis.txt") as file:
+            with open(apis_file) as file:
                 default_endpoint = [endpoint.strip() for endpoint in file.readlines()]
             api_endpoints = default_endpoint
             logger.error("api_endpoint are of default")
         except FileNotFoundError:
-            logger.error("Default apis.txt file not found and no api_endpoints provided. The api_endpoint field is required to get metrics.")
-            return jsonify(error="Default apis.txt file not found and no api_endpoints provided. The api_endpoint field is required to get metrics."), 400
+            logger.error("default_api_endpoints.txt file not found and no api_endpoints provided. The api_endpoint field is required to get metrics.")
+            return jsonify(error="default_api_endpoints.txt file not found and no api_endpoints provided. The api_endpoint field is required to get metrics."), 400
 
     api_names = getLabelNameFromA10URL(api_endpoints)
     partition = request.args.get("partition", "shared")
